@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Five Summers, Then The Door</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bone:#F1E7D6;
+    --linen:#E9DDC8;
+    --oat:#D8CAB0;
+    --espresso:#3B332B;
+    --ink:#6C6255;
+    --olive:#6E7254;
+    --olive-soft:#9AA07C;
+    --clay:#9E7250;
+
+    --display:'Cormorant Garamond',Georgia,serif;
+    --body:'Jost',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--bone);
+    color:var(--espresso);
+    font-family:var(--body);
+    font-weight:300;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* warm light wash */
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(1100px 700px at 88% 8%, rgba(178,136,106,0.11), transparent 60%),
+      radial-gradient(900px 600px at 4% 96%, rgba(110,114,84,0.09), transparent 62%);
+  }
+  /* paper grain */
+  body::after{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:3; opacity:.4;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
+  }
+
+  .stage{position:relative; height:100dvh; width:100%; z-index:1;}
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:7vh 8vw 15vh;
+    opacity:0; visibility:hidden; transform:translateY(16px);
+    transition:opacity .6s cubic-bezier(.3,.7,.3,1), transform .6s cubic-bezier(.3,.7,.3,1), visibility .6s;
+    overflow-y:auto;
+  }
+  .slide.on{opacity:1; visibility:visible; transform:none;}
+  .inner{max-width:980px; margin:0 auto; width:100%;}
+
+  /* ---------- type ---------- */
+  .eyebrow{
+    font-family:var(--body); font-size:.62rem; font-weight:400;
+    letter-spacing:.42em; text-transform:uppercase; color:var(--olive);
+    margin-bottom:2rem; display:flex; align-items:center; gap:1.1rem;
+  }
+  .eyebrow::after{content:''; flex:1; height:1px; background:var(--oat); max-width:220px;}
+
+  h1{
+    font-family:var(--display); font-weight:300; color:var(--clay);
+    font-size:clamp(4.2rem,15vw,10.5rem); line-height:.9; letter-spacing:-.02em;
+  }
+  h2{
+    font-family:var(--display); font-weight:300; color:var(--clay);
+    font-size:clamp(2.1rem,5.4vw,4.1rem); line-height:1.08; letter-spacing:-.012em;
+    margin-bottom:1.8rem; max-width:16em;
+  }
+  h2 em{font-style:italic; color:var(--espresso);}
+
+  p{
+    font-size:clamp(.95rem,1.4vw,1.1rem); line-height:1.85; color:var(--ink);
+    max-width:34em; margin-bottom:1.1rem; font-weight:300; letter-spacing:.005em;
+  }
+  p.lead{
+    font-family:var(--display); font-size:clamp(1.2rem,2.1vw,1.6rem);
+    line-height:1.55; color:var(--espresso); font-style:italic; font-weight:300;
+    max-width:26em;
+  }
+  strong{font-weight:500; color:var(--espresso);}
+
+  /* ---------- opener ---------- */
+  .opener{align-items:flex-start;}
+  .opener .arch-bg{
+    position:absolute; right:8vw; top:50%; transform:translateY(-50%);
+    width:min(300px,34vw); height:min(420px,48vh);
+    border:1px solid var(--oat); border-radius:999px 999px 8px 8px;
+    z-index:-1; opacity:.85;
+  }
+  .opener h1{font-size:clamp(4.5rem,17vw,12rem);}
+  .opener .sub{
+    font-family:var(--display); font-style:italic; font-weight:300;
+    font-size:clamp(1.15rem,2.6vw,1.85rem); color:var(--ink);
+    margin-top:1.5rem; letter-spacing:.01em;
+  }
+  .hairline{width:78px; height:1px; background:var(--clay); margin-top:2.4rem;}
+
+  /* ---------- arches (signature) ---------- */
+  .arches{
+    display:grid; grid-template-columns:repeat(6,1fr);
+    gap:clamp(8px,1.4vw,20px); margin:2.6rem 0 2rem; align-items:end;
+  }
+  .arch{
+    border:1px solid var(--oat); border-radius:999px 999px 6px 6px;
+    background:linear-gradient(180deg, rgba(255,251,242,.5), rgba(233,221,200,.3));
+    padding:clamp(14px,1.6vw,20px) 8px clamp(12px,1.4vw,16px);
+    text-align:center; display:flex; flex-direction:column;
+    min-height:clamp(150px,21vh,215px); justify-content:flex-end;
+  }
+  .arch .yr{
+    font-family:var(--display); font-size:clamp(.95rem,1.7vw,1.3rem);
+    font-weight:400; letter-spacing:.02em;
+  }
+  .arch .ages{
+    font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink); margin-top:6px;
+  }
+  .growth{
+    flex:1; display:flex; align-items:flex-end; justify-content:center;
+    gap:6px; padding-bottom:14px;
+  }
+  .gb{width:6px; border-radius:4px 4px 0 0; transform:scaleY(0); transform-origin:bottom;}
+  .gb.z{background:var(--olive-soft);}
+  .gb.m{background:var(--clay); opacity:.7;}
+  .on .gb{animation:rise .7s cubic-bezier(.25,.8,.3,1) forwards;}
+  @keyframes rise{to{transform:scaleY(1);}}
+
+  .arch.door{
+    background:linear-gradient(180deg, rgba(110,114,84,.14), rgba(110,114,84,.05));
+    border-color:var(--olive-soft);
+  }
+  .arch.door .yr{color:var(--clay);}
+  .knob{
+    width:7px; height:7px; border-radius:50%; background:var(--olive);
+    align-self:flex-end; margin:0 12px 26px 0;
+  }
+  .key{
+    display:flex; gap:1.8rem; font-size:.62rem; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink); margin-bottom:.4rem;
+  }
+  .key span{display:flex; align-items:center; gap:.55rem;}
+  .kd{width:8px; height:8px; border-radius:50%;}
+
+  /* ---------- money ---------- */
+  .money{display:flex; align-items:center; gap:clamp(10px,2.2vw,28px); flex-wrap:wrap; margin:2.2rem 0 2rem;}
+  .amt-card{
+    border:1px solid var(--oat); border-radius:4px; padding:20px 26px;
+    min-width:140px; background:rgba(255,251,242,.45);
+  }
+  .amt-card .who{font-size:.58rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink);}
+  .amt-card .amt{
+    font-family:var(--display); font-size:clamp(1.7rem,3.4vw,2.5rem);
+    font-weight:300; margin-top:8px; letter-spacing:-.01em;
+  }
+  .op{font-family:var(--display); font-size:1.6rem; color:var(--clay); font-weight:300;}
+  .amt-card.dest{background:linear-gradient(180deg, rgba(110,114,84,.12), rgba(110,114,84,.04)); border-color:var(--olive-soft);}
+  .amt-card.dest .amt{color:var(--olive);}
+  .amt-card .per{font-size:.5em; color:var(--ink); font-family:var(--body); letter-spacing:.06em;}
+
+  /* ---------- columns ---------- */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,4vw,56px); margin:2.4rem 0 1.8rem;}
+  .col{padding-top:1.4rem; border-top:1px solid var(--oat); position:relative;}
+  .col::before{content:''; position:absolute; top:-1px; left:0; width:44px; height:1px;}
+  .col.you::before{background:var(--clay);}
+  .col.me::before{background:var(--olive);}
+  .col h3{
+    font-family:var(--display); font-weight:400; font-style:italic;
+    font-size:clamp(1.2rem,2.2vw,1.6rem); margin-bottom:.75rem;
+  }
+  .col p{font-size:.92rem; margin:0; line-height:1.75;}
+
+  /* ---------- closer ---------- */
+  .closer{text-align:center; align-items:center;}
+  .closer .inner{display:flex; flex-direction:column; align-items:center;}
+  .closer .eyebrow{justify-content:center;}
+  .closer .eyebrow::after{display:none;}
+  .closer h1{color:var(--clay); font-size:clamp(5.5rem,20vw,14rem); letter-spacing:.01em;}
+  .closer p{text-align:center; max-width:31em;}
+  .closer .hairline{margin:2rem auto 2.2rem;}
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:fixed; bottom:0; left:0; right:0; z-index:5;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem clamp(20px,8vw,68px) 1.5rem;
+    background:linear-gradient(180deg, transparent, var(--bone) 45%);
+  }
+  .dots{display:flex; gap:11px;}
+  .dot{
+    width:6px; height:6px; border-radius:50%; border:none; padding:0; cursor:pointer;
+    background:var(--oat); transition:.3s;
+  }
+  .dot.on{background:var(--clay); transform:scale(1.5);}
+  .arrows{display:flex; gap:10px;}
+  .arrows button{
+    background:transparent; border:1px solid var(--oat); color:var(--espresso);
+    width:46px; height:38px; border-radius:3px; cursor:pointer;
+    font-size:.9rem; font-family:var(--body); font-weight:300; transition:.25s;
+  }
+  .arrows button:hover:not(:disabled){background:var(--linen); border-color:var(--clay);}
+  .arrows button:disabled{opacity:.3; cursor:default;}
+  .arrows button:focus-visible,.dot:focus-visible{outline:1.5px solid var(--clay); outline-offset:4px;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:880px){
+    .arches{grid-template-columns:repeat(3,1fr);}
+    .arch{min-height:150px;}
+    .cols{grid-template-columns:1fr; gap:1.8rem;}
+    .money{gap:10px;}
+    .amt-card{min-width:112px; padding:14px 18px;}
+    .opener .arch-bg{display:none;}
+    .slide{padding:6vh 8vw 14vh;}
+  }
+  @media (max-width:430px){
+    .arches{grid-template-columns:repeat(2,1fr); gap:10px;}
+    .key{flex-direction:column; gap:.5rem;}
+    .op{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:opacity .01s !important;}
+    .gb{transform:scaleY(1);}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- 1 -->
+  <section class="slide opener on">
+    <div class="arch-bg"></div>
+    <div class="inner">
+      <div class="eyebrow">A plan for</div>
+      <h1>Malak</h1>
+      <div class="sub">Everything here is about what you want.</div>
+      <div class="hairline"></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">What you've been picturing</div>
+      <h2>The home with the door<br>that never really <em>closes</em>.</h2>
+      <p>The island everyone ends up standing around. A table long enough that nobody eats off their lap. Both families over on the same night and it still feels easy. Zayn and Mimi with their own rooms and a door to shut.</p>
+      <p>Space that finally matches how much you love having people in it.</p>
+      <p><strong>I've heard you every single time you've said it. I want it too. This was never a no.</strong></p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">What I finally saw</div>
+      <h2>We're already standing in<br>something we can't <em>buy back</em>.</h2>
+      <p class="lead">The backyard.</p>
+      <p>The trampoline. The play structure. The grass they're running across before their shoes are off. Most homes in the range we'd move to don't come with a yard like this — and we'd be handing it back at the exact age it's their entire world.</p>
+      <p><strong>Zayn is 4. Mimi is 2.</strong> There is no version of this where we get these years again.</p>
+    </div>
+  </section>
+
+  <!-- 4 — signature -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">The window</div>
+      <h2>Five summers,<br>then the <em>door</em>.</h2>
+      <div class="key">
+        <span><i class="kd" style="background:var(--olive-soft)"></i> Zayn</span>
+        <span><i class="kd" style="background:var(--clay)"></i> Mimi</span>
+      </div>
+      <div class="arches">
+        <div class="arch"><div class="growth"><i class="gb z" style="height:38px;animation-delay:.08s"></i><i class="gb m" style="height:24px;animation-delay:.14s"></i></div><div class="yr">2026</div><div class="ages">4 &amp; 2</div></div>
+        <div class="arch"><div class="growth"><i class="gb z" style="height:46px;animation-delay:.2s"></i><i class="gb m" style="height:32px;animation-delay:.26s"></i></div><div class="yr">2027</div><div class="ages">5 &amp; 3</div></div>
+        <div class="arch"><div class="growth"><i class="gb z" style="height:54px;animation-delay:.32s"></i><i class="gb m" style="height:40px;animation-delay:.38s"></i></div><div class="yr">2028</div><div class="ages">6 &amp; 4</div></div>
+        <div class="arch"><div class="growth"><i class="gb z" style="height:62px;animation-delay:.44s"></i><i class="gb m" style="height:48px;animation-delay:.5s"></i></div><div class="yr">2029</div><div class="ages">7 &amp; 5</div></div>
+        <div class="arch"><div class="growth"><i class="gb z" style="height:70px;animation-delay:.56s"></i><i class="gb m" style="height:56px;animation-delay:.62s"></i></div><div class="yr">2030</div><div class="ages">8 &amp; 6</div></div>
+        <div class="arch door"><div class="growth"><i class="gb z" style="height:78px;animation-delay:.68s"></i><i class="gb m" style="height:64px;animation-delay:.74s"></i></div><div class="knob"></div><div class="yr">2031</div><div class="ages">9 &amp; 7</div></div>
+      </div>
+      <p>By 2031 they'll want their own rooms more than they want the trampoline. Friends over instead of running outside. <strong>That's the summer the yard stops being the point — and the house becomes it.</strong></p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">How it gets paid for</div>
+      <h2>Two car payments<br>become one <em>home</em>.</h2>
+      <div class="money">
+        <div class="amt-card"><div class="who">Civic</div><div class="amt">$488</div></div>
+        <span class="op">+</span>
+        <div class="amt-card"><div class="who">RAV4</div><div class="amt">$900</div></div>
+        <span class="op">→</span>
+        <div class="amt-card dest"><div class="who">Toward the home</div><div class="amt">$1,388<span class="per">/mo</span></div></div>
+      </div>
+      <p>Both cars are paid off by 2031. That $1,388 a month doesn't vanish — it moves.</p>
+      <p>Add five more years of this mortgage coming down, the equity we build here, and the investments growing untouched the whole time. <strong>That's what turns the bigger home from a wish into a number we can actually reach.</strong></p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Why 2031 and not this year</div>
+      <h2>So you don't get the house<br>and lose <em>me</em> to pay for it.</h2>
+      <p>If we stretch for it now, the extra payment comes out of the one thing I've been working toward — being home more. I'd have to work more years, not fewer.</p>
+      <div class="cols">
+        <div class="col you">
+          <h3>What you want</h3>
+          <p>The bigger home. Room for everyone. Doors open, family over, the life you've always pictured hosting.</p>
+        </div>
+        <div class="col me">
+          <h3>What I want</h3>
+          <p>My hours down from 35 toward 20. Home for dinner. Actually there for their childhood instead of hearing about it after.</p>
+        </div>
+      </div>
+      <p><strong>Five years is how we get both. Not one.</strong></p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide closer">
+    <div class="inner">
+      <div class="eyebrow">The promise</div>
+      <h1>2031</h1>
+      <div class="hairline"></div>
+      <p class="lead">Not someday. Not when things settle down. Not if.</p>
+      <p>I'm not asking you to wait for nothing. I'm asking you to wait for five summers in a backyard our kids will remember for the rest of their lives — and then the front door you've been picturing since before Mimi was born.</p>
+      <p><strong>You've been patient with me through a lot. This one's yours.</strong></p>
+    </div>
+  </section>
+
+</div>
+
+<nav class="nav">
+  <div class="dots" id="dots"></div>
+  <div class="arrows">
+    <button id="prev" aria-label="Previous slide">←</button>
+    <button id="next" aria-label="Next slide">→</button>
+  </div>
+</nav>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dotsWrap=document.getElementById('dots');
+  const prev=document.getElementById('prev'), next=document.getElementById('next');
+  let i=0;
+
+  slides.forEach((_,n)=>{
+    const b=document.createElement('button');
+    b.className='dot'+(n===0?' on':'');
+    b.setAttribute('aria-label','Go to slide '+(n+1));
+    b.onclick=()=>go(n);
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+
+  function go(n){
+    if(n<0||n>=slides.length||n===i) return;
+    slides[i].classList.remove('on'); dots[i].classList.remove('on');
+    i=n;
+    slides[i].classList.add('on'); dots[i].classList.add('on');
+    slides[i].scrollTop=0;
+    prev.disabled=(i===0);
+    next.disabled=(i===slides.length-1);
+  }
+  prev.onclick=()=>go(i-1);
+  next.onclick=()=>go(i+1);
+  prev.disabled=true;
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault(); go(i+1);}
+    if(e.key==='ArrowLeft') go(i-1);
+  });
+
+  let x0=null;
+  document.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(x0===null) return;
+    const dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>55) go(dx<0?i+1:i-1);
+    x0=null;
+  },{passive:true});
+</script>
+</body>
+</html>
